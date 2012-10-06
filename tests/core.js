@@ -15,6 +15,11 @@ testosterone
     var funk = require('funk')('parallel');
 
     db.open(function () {
+      // Assert that the variable assignment to the contructor call takes place 
+      // prior to the callback execution provided to the constructor.
+      var newDb = new connect_mongodb({db: db}, function(){
+        funk.add(assert.ok)(newDb instanceof connect_mongodb);
+      });
       connect_mongodb(null, funk.add(assert.ok));
       connect_mongodb({db: null}, funk.add(assert.ok));
       connect_mongodb({db: db, setInterval: -1}, funk.add(assert.ifError));
